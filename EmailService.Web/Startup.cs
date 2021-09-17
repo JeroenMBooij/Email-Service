@@ -54,7 +54,7 @@ namespace EmailService.Web
                     {
                         Name = "Jeroen Booij",
                         Email = "jmbooij.a@gmail.com",
-                        Url = new Uri("https://www.facebook.com/people/Jeroen-Booij/100018633216320"),
+                        Url = new Uri("https://twitter.com/Jeroen57971625"),
                     },
                     License = new OpenApiLicense
                     {
