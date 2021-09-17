@@ -5,10 +5,12 @@
     <UserSecretsId>6a7d86a2-8fac-4eaf-85a0-7137e83c2153</UserSecretsId>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="MailKit" Version="2.10.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.6.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.6.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.6.3" />
