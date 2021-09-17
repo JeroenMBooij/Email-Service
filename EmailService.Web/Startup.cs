@@ -68,6 +68,7 @@ namespace EmailService.Web
 
             EmailConfigurationDto emailConfig = Configuration.GetSection("EmailConfiguration")
                 .Get<EmailConfigurationDto>();
+            emailConfig.Password = Configuration["EMAIL_APP_PASSWORD"];
             if (emailConfig != null)
             {
                 services.AddScoped<HttpClient>();
@@ -82,7 +83,6 @@ namespace EmailService.Web
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             #region routing
-            app.UseHttpsRedirection();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
