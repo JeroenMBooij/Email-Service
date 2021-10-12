@@ -10,7 +10,5 @@ namespace EmailService.Web.Services.Interfaces
 
         Task SendHtmlEmail(MessageDto message);
         Task SendTextEmail(MessageDto message);
-        Task SendProjectEmail(string[] to, string subject);
-        Task SendTestEmail(string[] to, string name, string subject);
     }
 }

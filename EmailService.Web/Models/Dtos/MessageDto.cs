@@ -7,13 +7,18 @@ namespace EmailService.Web.Models.Dtos
 {
     public class MessageDto
     {
+        public string Sender { get; set; }
+        public string AppKey { get; set; }
         public List<MailboxAddress> Recipients { get; set; }
 
         public string Subject { get; set; }
         public string Content { get; set; }
 
-        public MessageDto(IEnumerable<string> to, string subject, string content)
+        public MessageDto(string sender, string appKey, IEnumerable<string> to, string subject, string content)
         {
+            Sender = sender;
+            AppKey = appKey;
+
             Recipients = new List<MailboxAddress>();
 
             Recipients.AddRange(to.Select(x => new MailboxAddress("test", x)));
@@ -23,6 +28,9 @@ namespace EmailService.Web.Models.Dtos
 
         public MessageDto(Message message)
         {
+            Sender = message.Sender;
+            AppKey = message.AppKey;
+
             Recipients = new List<MailboxAddress>();
 
             Recipients.AddRange(message.Recipients.Select(x => new MailboxAddress("test", x)));

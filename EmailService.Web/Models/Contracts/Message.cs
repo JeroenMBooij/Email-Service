@@ -9,6 +9,10 @@ namespace EmailService.Web.Models.Contracts
     public class Message : IValidatableObject
     {
         [Required]
+        public string Sender { get; set; }
+        [Required]
+        public string AppKey { get; set; }
+        [Required]
         public List<string> Recipients { get; set; }
         [Required]
         public string Subject { get; set; }

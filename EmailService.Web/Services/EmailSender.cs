@@ -1,9 +1,8 @@
-﻿using EmailService.Web.Logic;
-using EmailService.Web.Models.Dtos;
+﻿using EmailService.Web.Models.Dtos;
 using EmailService.Web.Services.Interfaces;
 using MailKit.Net.Smtp;
-using Microsoft.AspNetCore.Hosting;
 using MimeKit;
+using System;
 using System.Threading.Tasks;
 
 namespace EmailService.Web.Services
@@ -11,48 +10,28 @@ namespace EmailService.Web.Services
     public class EmailSender : IEmailSender
     {
         private readonly EmailConfigurationDto _emailConfiguration;
-        private readonly IWebHostEnvironment _env;
 
         public string RelativePath { get; set; }
 
-        public EmailSender(EmailConfigurationDto emailConfiguration, IWebHostEnvironment env)
+        public EmailSender(EmailConfigurationDto emailConfiguration)
         {
             _emailConfiguration = emailConfiguration;
-            _env = env;
-        }
-        public async Task SendProjectEmail(string[] to, string subject)
-        {
-            var content = new ProjectHTMLBuilder(_env.ContentRootPath, _emailConfiguration.UrlHttpHandler);
-            content.BuildContent();
-
-            var message = new MessageDto(to, subject, content.Content);
-            await Send(CreateEmailHTMLMessage(message));
         }
 
         public async Task SendHtmlEmail(MessageDto message)
         {
-            await Send(CreateEmailHTMLMessage(message));
+            await Send(message.Sender, message.AppKey, CreateEmailHTMLMessage(message));
         }
 
         public async Task SendTextEmail(MessageDto message)
         {
-            await Send(CreateEmailTextMessage(message));
-        }
-
-        public async Task SendTestEmail(string[] to, string name, string subject)
-        {
-            var content = new TestHTMLBuilder(_env.ContentRootPath);
-            content.SetName(name)
-                .BuildContent();
-
-            var message = new MessageDto(to, subject, content.Content);
-            await Send(CreateEmailHTMLMessage(message));
+            await Send(message.Sender, message.AppKey, CreateEmailTextMessage(message));
         }
 
         private MimeMessage CreateEmailHTMLMessage(MessageDto message)
         {
             MimeMessage emailMessage = new MimeMessage();
-            emailMessage.From.Add(new MailboxAddress(_emailConfiguration.FromName, _emailConfiguration.From));
+            emailMessage.From.Add(new MailboxAddress(_emailConfiguration.FromName, message.Sender));
             emailMessage.To.AddRange(message.Recipients);
             emailMessage.Subject = message.Subject;
 
@@ -75,7 +54,7 @@ namespace EmailService.Web.Services
             return emailMessage;
         }
 
-        private async Task Send(MimeMessage mailMessage)
+        private async Task Send(string sender, string appKey, MimeMessage mailMessage)
         {
             await Task.Run(() =>
             {
@@ -85,11 +64,11 @@ namespace EmailService.Web.Services
                     {
                         client.Connect(_emailConfiguration.SmtpServer, _emailConfiguration.Port, true);
                         client.AuthenticationMechanisms.Remove("XOAUTH2");
-                        client.Authenticate(_emailConfiguration.Username, _emailConfiguration.Password);
+                        client.Authenticate(sender, appKey);
 
                         client.Send(mailMessage);
                     }
-                    catch
+                    catch(Exception error)
                     {
                         throw;
                     }
