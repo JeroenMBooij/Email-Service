@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  emailservice.web:
+    image: ${DOCKER_REGISTRY-}emailserviceweb
+    build:
+      context: .
+      dockerfile: EmailService.Web/Dockerfile
