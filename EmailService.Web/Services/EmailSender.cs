@@ -1,6 +1,7 @@
 ﻿using EmailService.Web.Models.Dtos;
 using EmailService.Web.Services.Interfaces;
 using MailKit.Net.Smtp;
+using Microsoft.Extensions.Configuration;
 using MimeKit;
 using System;
 using System.Threading.Tasks;
@@ -9,14 +10,16 @@ namespace EmailService.Web.Services
 {
     public class EmailSender : IEmailSender
     {
-        private readonly EmailConfigurationDto _emailConfiguration;
-
         public string RelativePath { get; set; }
 
-        public EmailSender(EmailConfigurationDto emailConfiguration)
+        private readonly IConfiguration _config;
+
+        public EmailSender(IConfiguration config)
         {
-            _emailConfiguration = emailConfiguration;
+            _config = config;
         }
+
+
 
         public async Task SendHtmlEmail(MessageDto message)
         {
@@ -31,7 +34,7 @@ namespace EmailService.Web.Services
         private MimeMessage CreateEmailHTMLMessage(MessageDto message)
         {
             MimeMessage emailMessage = new MimeMessage();
-            emailMessage.From.Add(new MailboxAddress(_emailConfiguration.FromName, message.Sender));
+            emailMessage.From.Add(new MailboxAddress("", message.Sender));
             emailMessage.To.AddRange(message.Recipients);
             emailMessage.Subject = message.Subject;
 
@@ -46,7 +49,7 @@ namespace EmailService.Web.Services
         private MimeMessage CreateEmailTextMessage(MessageDto message)
         {
             MimeMessage emailMessage = new MimeMessage();
-            emailMessage.From.Add(new MailboxAddress(_emailConfiguration.FromName, _emailConfiguration.From));
+            emailMessage.From.Add(new MailboxAddress("", message.Sender));
             emailMessage.To.AddRange(message.Recipients);
             emailMessage.Subject = message.Subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Text) { Text = message.Content };
@@ -62,7 +65,7 @@ namespace EmailService.Web.Services
                 {
                     try
                     {
-                        client.Connect(_emailConfiguration.SmtpServer, _emailConfiguration.Port, true);
+                        client.Connect(_config["EmailConfiguration:SmtpServer"], int.Parse(_config["EmailConfiguration:Port"]), true);
                         client.AuthenticationMechanisms.Remove("XOAUTH2");
                         client.Authenticate(sender, appKey);
 

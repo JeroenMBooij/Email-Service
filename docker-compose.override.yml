@@ -2,8 +2,15 @@ version: '3.4'
 
 services:
   emailservice.web:
+    container_name: emailservice.web
     environment:
-      - ASPNETCORE_ENVIRONMENT=${Enviroment}
-      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "2000:443"
+      - "2000:80"
+    networks:
+      - my-proxy-net
+
+networks:
+    my-proxy-net:
+      external:
+        name: custom_network

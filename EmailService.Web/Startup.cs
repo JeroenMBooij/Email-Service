@@ -29,6 +29,9 @@ namespace EmailService.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<HttpClient>();
+            services.AddScoped<IEmailSender, EmailSender>();
+
             services.AddControllers();
             services.AddCors(options =>
             {
@@ -65,18 +68,6 @@ namespace EmailService.Web
                 configure.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
 
             });
-
-            EmailConfigurationDto emailConfig = Configuration.GetSection("EmailConfiguration")
-                .Get<EmailConfigurationDto>();
-            emailConfig.Password = Configuration["EMAIL_APP_PASSWORD"];
-            if (emailConfig != null)
-            {
-                services.AddScoped<HttpClient>();
-
-                services.AddSingleton(emailConfig);
-
-                services.AddScoped<IEmailSender, EmailSender>();
-            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -101,7 +92,6 @@ namespace EmailService.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                builder.AddUserSecrets<Startup>();
             }
             #endregion
 
