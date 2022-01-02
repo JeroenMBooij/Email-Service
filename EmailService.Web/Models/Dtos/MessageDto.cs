@@ -21,7 +21,7 @@ namespace EmailService.Web.Models.Dtos
 
             Recipients = new List<MailboxAddress>();
 
-            Recipients.AddRange(to.Select(x => new MailboxAddress("test", x)));
+            Recipients.AddRange(to.Select(x => new MailboxAddress("", x)));
             Subject = subject;
             Content = content;
         }
@@ -33,7 +33,7 @@ namespace EmailService.Web.Models.Dtos
 
             Recipients = new List<MailboxAddress>();
 
-            Recipients.AddRange(message.Recipients.Select(x => new MailboxAddress("test", x)));
+            Recipients.AddRange(message.Recipients.Select(x => new MailboxAddress("", x)));
             Subject = message.Subject;
             Content = message.Content;
         }
