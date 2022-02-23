@@ -2,4 +2,18 @@
 
 This repository contains the source code for a simple email service API running in Docker <br>
 
-A running instance of the application can be found at <a href="https://email.aapie.xyz">https://email.aapie.xyz/index.html</a> 
+<h1> Usage <h1>
+  * prerequisite - docker installed
+  
+  1. run docker-compose up
+  2. open localhost:2000
+  
+ <h1> Development </h1>
+  To use the Email service with other containers you have to create a docker network named <code>my-proxy-net</code>
+  
+  <code>
+  networks:
+    my-proxy-net:
+      external:
+        name: custom_network
+  </code>
