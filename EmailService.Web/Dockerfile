@@ -1,6 +1,7 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 FROM mcr.microsoft.com/dotnet/aspnet:3.1 AS base
+RUN mv Dockerfile ../
 WORKDIR /app
 EXPOSE 80
 
@@ -10,7 +11,6 @@ COPY ["EmailService.Web.csproj", "EmailService.Web/"]
 RUN dotnet restore "EmailService.Web/EmailService.Web.csproj"
 COPY . .
 WORKDIR "/src/EmailService.Web"
-RUN mv ../Dockerfile ../../
 RUN dotnet build "EmailService.Web.csproj" -c Release -o /app/build
 
 FROM build AS publish
