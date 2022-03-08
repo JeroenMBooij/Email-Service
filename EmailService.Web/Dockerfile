@@ -6,12 +6,12 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
 WORKDIR /src
-COPY ../ .
-RUN dotnet restore "EmailService.Web/EmailService.Web.csproj"
-RUN dotnet build "EmailService.Web/EmailService.Web.csproj" -c Release -o /app/build
+COPY . .
+RUN dotnet restore "EmailService.Web.csproj"
+RUN dotnet build "EmailService.Web.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "EmailService.Web/EmailService.Web.csproj" -c Release -o /app/publish
+RUN dotnet publish "EmailService.Web.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
