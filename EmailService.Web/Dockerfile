@@ -5,8 +5,8 @@ WORKDIR /app
 EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
-RUN mv Dockerfile ../
 WORKDIR /src
+RUN mv Dockerfile ../
 COPY ["EmailService.Web.csproj", "EmailService.Web/"]
 RUN dotnet restore "EmailService.Web/EmailService.Web.csproj"
 COPY . .
