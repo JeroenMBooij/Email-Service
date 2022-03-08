@@ -10,6 +10,7 @@ COPY ["EmailService.Web.csproj", "EmailService.Web/"]
 RUN dotnet restore "EmailService.Web/EmailService.Web.csproj"
 COPY . .
 WORKDIR "/src/EmailService.Web"
+RUN mv Dockerfile ../
 RUN dotnet build "EmailService.Web.csproj" -c Release -o /app/build
 
 FROM build AS publish
