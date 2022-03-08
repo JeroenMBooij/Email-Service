@@ -8,12 +8,12 @@ FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
 WORKDIR /src
 COPY ["EmailService.Web.csproj", "EmailService.Web/"]
 RUN dotnet restore "EmailService.Web/EmailService.Web.csproj"
-COPY ["Dockerfile", "../"]
 COPY . .
 WORKDIR "/src/EmailService.Web"
 RUN dotnet build "EmailService.Web.csproj" -c Release -o /app/build
 
 FROM build AS publish
+RUN ls
 RUN dotnet publish "EmailService.Web.csproj" -c Release -o /app/publish
 
 FROM base AS final
