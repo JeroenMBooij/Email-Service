@@ -6,9 +6,9 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
 WORKDIR /src
-RUN ls
 COPY ["EmailService.Web.csproj", "EmailService.Web/"]
 RUN dotnet restore "EmailService.Web/EmailService.Web.csproj"
+COPY ["Dockerfile", "../"]
 COPY . .
 WORKDIR "/src/EmailService.Web"
 RUN dotnet build "EmailService.Web.csproj" -c Release -o /app/build
