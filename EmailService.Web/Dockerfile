@@ -7,6 +7,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
 WORKDIR /src
 COPY . .
+RUN ls
 RUN dotnet restore "EmailService.Web.csproj"
 RUN dotnet build "EmailService.Web.csproj" -c Release -o /app/build
 
