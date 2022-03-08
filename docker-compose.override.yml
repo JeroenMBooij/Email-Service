@@ -7,10 +7,3 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "2000:80"
-    networks:
-      - my-proxy-net
-
-networks:
-    my-proxy-net:
-      external:
-        name: custom_network
