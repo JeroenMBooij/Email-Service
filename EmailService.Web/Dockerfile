@@ -9,10 +9,10 @@ WORKDIR /src
 COPY ["EmailService.Web.csproj", "EmailService.Web/"]
 RUN dotnet restore "EmailService.Web/EmailService.Web.csproj"
 COPY . .
-WORKDIR "/src/EmailService.Web"
-RUN ls ../
+WORKDIR "/src"
 RUN dotnet build "EmailService.Web.csproj" -c Release -o /app/build
 
+WORKDIR "/EmailService.Web"
 FROM build AS publish
 RUN dotnet publish "EmailService.Web.csproj" -c Release -o /app/publish
 
