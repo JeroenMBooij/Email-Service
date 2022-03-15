@@ -30,4 +30,4 @@ jobs:
         with:
           context: ./EmailService.Web
           push: true
-          tags: booij/email.server:latest
+          tags: booij/email.service:latest
